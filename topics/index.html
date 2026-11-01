@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>נושאי לימוד - נווה</title>
+    <title>נושאי לימוד - נווה 📚</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Rubik:wght@500;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,9 +13,10 @@
         .header { text-align: center; margin-bottom: 20px; }
         .header h1 { font-family: 'Fredoka', sans-serif; font-size: 2rem; color: #0284c7; }
         .grid { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; max-width: 480px; }
-        .card { background: #ffffff; border-radius: 16px; padding: 16px; border: 2px solid #bae6fd; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .icon { font-size: 2rem; }
-        .title { font-size: 1.1rem; font-weight: 700; color: #0284c7; }
+        .card { background: #ffffff; border-radius: 16px; padding: 16px; border: 2px solid #bae6fd; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: transform 0.15s; }
+        .card:active { transform: scale(0.97); }
+        .icon { font-size: 2.2rem; }
+        .title { font-size: 1.15rem; font-weight: 700; color: #0284c7; margin-bottom: 2px; }
         .desc { font-size: 0.85rem; color: #64748b; }
     </style>
 </head>
@@ -24,11 +25,29 @@
     
     <div class="header">
         <h1>כל נושאי הלימוד 📚</h1>
-        <p>נושאי בסיס, אפליקציות אלפבית ותרגול דקדוק</p>
+        <p>אפליקציות אלפבית, תנועות, דקדוק והבחנה</p>
     </div>
 
     <div class="grid">
-        <!-- Topic 1 -->
+        <!-- 1. ABC App -->
+        <a href="abc-app.html" class="card">
+            <span class="icon">🔠</span>
+            <div>
+                <div class="title">אפליקציית ה-ABC המלאה</div>
+                <div class="desc">כל 26 האותיות, שמות האותיות בעברית וצלילים</div>
+            </div>
+        </a>
+
+        <!-- 2. P vs Q Discrimination Test -->
+        <a href="p-vs-q.html" class="card">
+            <span class="icon">🎯</span>
+            <div>
+                <div class="title">מבחן הבחנה: p מול q</div>
+                <div class="desc">15 מילים לתרגול ההבדל בין p ל-q הקטנות</div>
+            </div>
+        </a>
+
+        <!-- 3. Pronouns Suite -->
         <a href="pronouns.html" class="card">
             <span class="icon">👥</span>
             <div>
@@ -37,30 +56,12 @@
             </div>
         </a>
 
-        <!-- Topic 2 -->
+        <!-- 4. Vowels Suite -->
         <a href="vowels.html" class="card">
             <span class="icon">🔤</span>
             <div>
                 <div class="title">תנועות קצרות (Short Vowels)</div>
-                <div class="desc">A, E, I, O, U & תנועות CVC</div>
-            </div>
-        </a>
-
-        <!-- Topic 3 -->
-        <a href="consonants.html" class="card">
-            <span class="icon">🔊</span>
-            <div>
-                <div class="title">צלילי עיצורים (Consonants)</div>
-                <div class="desc">חזרה על כל צלילי האותיות והווריאציות שלהן</div>
-            </div>
-        </a>
-
-        <!-- Topic 4 -->
-        <a href="abc-app.html" class="card">
-            <span class="icon">🔠</span>
-            <div>
-                <div class="title">אפליקציית ה-ABC המלאה</div>
-                <div class="desc">כל 26 האותיות, שמות האותיות בעברית וצלילים</div>
+                <div class="desc">מגלגל התנועות, CVC Blending ואימון יומי</div>
             </div>
         </a>
     </div>
