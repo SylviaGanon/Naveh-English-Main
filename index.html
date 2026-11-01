@@ -8,7 +8,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Rubik', sans-serif; background: #f0f9ff; color: #0f172a; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px 10px; }
-        .header { text-align: center; margin-bottom: 20px; }
+        .header { text-align: center; margin-bottom: 25px; }
         .header h1 { font-family: 'Fredoka', sans-serif; font-size: 2.2rem; color: #0284c7; }
         .grid { display: grid; grid-template-columns: 1fr; gap: 15px; width: 100%; max-width: 480px; }
         .card { background: #ffffff; border-radius: 20px; padding: 20px; border: 2px solid #bae6fd; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px; transition: transform 0.15s; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
@@ -16,6 +16,7 @@
         .icon { font-size: 2.5rem; }
         .title { font-size: 1.3rem; font-weight: 700; color: #0284c7; margin-bottom: 4px; }
         .desc { font-size: 0.9rem; color: #64748b; }
+        .topic-card { border-color: #0284c7; background: #f0f9ff; }
         .quiz-card { border-color: #10b981; background: #ecfdf5; }
     </style>
 </head>
@@ -26,29 +27,21 @@
     </div>
 
     <div class="grid">
-        <!-- TOPICS SECTION -->
-        <a href="topics/pronouns.html" class="card">
-            <span class="icon">👥</span>
+        <!-- ALL TOPICS HUB -->
+        <a href="topics/index.html" class="card topic-card">
+            <span class="icon">📚</span>
             <div>
-                <div class="title">1. כינויי גוף (Pronouns)</div>
-                <div class="desc">לימוד, מבחן 2 השלבים (15 שאלות) ואימון יומי</div>
+                <div class="title" style="color: #0284c7;">נושאי לימוד ואפליקציות</div>
+                <div class="desc">כינויי גוף, תנועות, עיצורים ואפליקציית ה-ABC</div>
             </div>
         </a>
 
-        <a href="topics/vowels.html" class="card">
-            <span class="icon">🔤</span>
-            <div>
-                <div class="title">2. תנועות קצרות (Short Vowels)</div>
-                <div class="desc">לימוד, מבחן 2 השלבים (15 שאלות) ואימון יומי</div>
-            </div>
-        </a>
-
-        <!-- WEEKLY QUIZZES SECTION -->
+        <!-- WEEKLY QUIZZES HUB -->
         <a href="quizzes/index.html" class="card quiz-card">
             <span class="icon">📝</span>
             <div>
                 <div class="title" style="color: #047857;">מבחני בית ספר שבועיים</div>
-                <div class="desc">כל המבחנים והחידונים הנפרדים של נווה במקום אחד</div>
+                <div class="desc">כל המבחנים והחידונים הנפרדים לפי שבועות</div>
             </div>
         </a>
     </div>
