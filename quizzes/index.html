@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>מבחני בית ספר - נווה</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Rubik:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Rubik', sans-serif; background: #ecfdf5; color: #0f172a; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px 10px; }
+        .back-nav { width: 100%; max-width: 480px; margin-bottom: 12px; }
+        .back-btn { text-decoration: none; color: #047857; font-weight: 700; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-family: 'Fredoka', sans-serif; font-size: 2rem; color: #047857; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; max-width: 480px; }
+        .quiz-card { background: #ffffff; border-radius: 16px; padding: 16px; border: 2px solid #a7f3d0; text-decoration: none; color: inherit; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .quiz-title { font-size: 1.1rem; font-weight: 700; color: #047857; }
+        .quiz-date { font-size: 0.85rem; color: #059669; font-weight: 700; background: #d1fae5; padding: 4px 8px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="back-nav"><a href="../index.html" class="back-btn">➡️ חזרה למרכז הראשי</a></div>
+    
+    <div class="header">
+        <h1>מאגר מבחנים שבועיים 🎯</h1>
+        <p>כל המבחנים הנפרדים של נווה לפי שבועות</p>
+    </div>
+
+    <div class="grid">
+        <!-- Quiz 1 -->
+        <a href="week1-meet-emma.html" class="quiz-card">
+            <div>
+                <div class="quiz-title">מבחן 1: Meet Emma (11 מילים)</div>
+                <div style="font-size: 0.85rem; color: #64748b; margin-top: 2px;">מבחן 2 השלבים (15 שאלות) + אימון יומי</div>
+            </div>
+            <span class="quiz-date">שבוע 1</span>
+        </a>
+    </div>
+</body>
+</html>
