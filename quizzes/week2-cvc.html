@@ -289,3 +289,474 @@
                 <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
                     <span class="text-xs font-bold text-slate-700">ערבוב (Shuffle):</span>
                     <button onclick="toggleShuffle(4)" id="shuffle-btn-4" class="px-3 py-1 rounded-lg text-xs font-bold bg-emerald-500 text-white shadow-sm transition">
+                        ON (ערבוב פעיל)
+                    </button>
+                </div>
+            </div>
+
+            <!-- FLASHCARD AREA -->
+            <div class="bg-white rounded-3xl border-4 border-amber-200 shadow-xl p-6 sm:p-8 flex flex-col items-center text-center relative min-h-[380px] justify-between">
+                
+                <!-- Card Header -->
+                <div class="w-full flex justify-between items-center">
+                    <span id="mod4-counter" class="bg-amber-100 text-amber-800 font-bold text-xs sm:text-sm px-3 py-1 rounded-full">כרטיסייה 1 מתוך 11</span>
+                    <button onclick="speakWord(mod4CurrentCard().word)" class="bg-amber-500 hover:bg-amber-600 text-white p-2.5 rounded-xl transition font-bold text-sm flex items-center gap-1 shadow-sm">
+                        <span>🔊</span> <span>השמע</span>
+                    </button>
+                </div>
+
+                <!-- Card Content Display -->
+                <div class="my-auto w-full py-4 flex flex-col items-center">
+                    <!-- English Word Prompt -->
+                    <h2 id="mod4-word" class="en-text text-6xl sm:text-7xl font-extrabold text-slate-800 my-2">
+                        bat
+                    </h2>
+
+                    <!-- Visual Clue / Hint Box (Revealed by Button 1) -->
+                    <div id="mod4-hint-area" class="hidden my-3 p-4 bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl w-full max-w-xs transition">
+                        <div id="mod4-emoji" class="text-6xl mb-1">🦇</div>
+                        <div id="mod4-tpr" class="text-xs font-bold text-amber-800">🍎 Short A - apple</div>
+                    </div>
+
+                    <!-- Full Answer Box (Revealed by Button 2) -->
+                    <div id="mod4-answer-area" class="hidden my-3 p-4 bg-emerald-50 border-2 border-emerald-300 rounded-2xl w-full max-w-xs transition">
+                        <div class="text-xs text-emerald-600 font-bold">תרגום מלא:</div>
+                        <div id="mod4-hebrew" class="text-4xl font-extrabold text-emerald-700">עטלף / מחבט</div>
+                    </div>
+                </div>
+
+                <!-- MANDATORY BUTTONS 1 & 2 -->
+                <div class="w-full space-y-3 pt-2">
+                    <div class="grid grid-cols-2 gap-3 w-full">
+                        <!-- BUTTON 1: HINT -->
+                        <button onclick="mod4ShowHint()" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold py-3 px-4 rounded-2xl shadow-md border-b-4 border-amber-600 active:translate-y-0.5 active:border-b-0 transition text-sm sm:text-base flex items-center justify-center gap-1">
+                            <span>💡 רמז / Hint</span>
+                        </button>
+                        <!-- BUTTON 2: SHOW ANSWER -->
+                        <button onclick="mod4ShowAnswer()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-2xl shadow-md border-b-4 border-emerald-700 active:translate-y-0.5 active:border-b-0 transition text-sm sm:text-base flex items-center justify-center gap-1">
+                            <span>👁️ הצג תשובה</span>
+                        </button>
+                    </div>
+
+                    <!-- CARD NAVIGATION -->
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+                        <button onclick="mod4PrevCard()" class="text-slate-500 hover:text-slate-800 font-bold text-sm py-1 px-3">
+                            ➡️ הקודם
+                        </button>
+                        <button onclick="mod4NextCard()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm py-2 px-5 rounded-xl shadow transition">
+                            הכרטיסייה הבאה ⬅️
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-500 font-semibold">
+        Nave's English Lessons &copy; Master CVC Weekly System
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // MASTER 11 TARGET WORDS UNDER LEARNING
+        const targetWords = [
+            { word: 'bat', hebrew: 'עטלף / מחבט', emoji: '🦇', anchor: 'Short A (apple - תנועת ביס מתפוח)' },
+            { word: 'hat', hebrew: 'כובע', emoji: '🎩', anchor: 'Short A (apple - תנועת ביס מתפוח)' },
+            { word: 'bed', hebrew: 'מיטה', emoji: '🛏️', anchor: 'Short E (elephant - יד מאחורי האוזן)' },
+            { word: 'red', hebrew: 'אדום', emoji: '🔴', anchor: 'Short E (elephant - יד מאחורי האוזן)' },
+            { word: 'big', hebrew: 'גדול', emoji: '🐘', anchor: 'Short I (it - גירוד אף)' },
+            { word: 'pig', hebrew: 'חזיר', emoji: '🐷', anchor: 'Short I (it - גירוד אף)' },
+            { word: 'fog', hebrew: 'ערפל', emoji: '🌫️', anchor: 'Short O (dog - עיגול זרועות פתוח)' },
+            { word: 'log', hebrew: 'בול עץ', emoji: '🪵', anchor: 'Short O (dog - עיגול זרועות פתוח)' },
+            { word: 'bug', hebrew: 'חרק', emoji: '🐛', anchor: 'Short U (sun - פתיחת מטרייה למעלה)' },
+            { word: 'fun', hebrew: 'כיף', emoji: '🥳', anchor: 'Short U (sun - פתיחת מטרייה למעלה)' },
+            { word: 'sad', hebrew: 'עצוב', emoji: '😢', anchor: 'Short A (apple - תנועת ביס מתפוח)' }
+        ];
+
+        // GLOBAL APP STATE
+        let activeVoice = null;
+        let shuffleState = { 2: true, 3: true, 4: true }; // Default Shuffle ON for Modules 2, 3, 4
+        
+        // Module 1 State
+        let mod1Index = 0;
+
+        // Module 2 State
+        let mod2Index = 0;
+        let mod2Deck = [];
+
+        // Module 3 State
+        let mod3Index = 0;
+        let mod3Deck = [];
+
+        // Module 4 State
+        let mod4Index = 0;
+        let mod4Deck = [];
+
+        // Confetti Instance
+        const jsConfetti = new JSConfetti();
+
+        // INITIALIZATION ON WINDOW LOAD (NO AUTO-PLAY SPEECH)
+        window.onload = function() {
+            initSpeechSynthesis();
+            buildDecks();
+            renderModule1();
+            renderModule2();
+            renderModule3();
+            renderModule4();
+        };
+
+        // =========================================================================
+        // 1. AUDIO & VOICE ENGINE (FEMALE DEFAULT PREFERENCE, NO AUTO-PLAY)
+        // =========================================================================
+        function initSpeechSynthesis() {
+            if (!('speechSynthesis' in window)) return;
+
+            function populateVoices() {
+                const voices = window.speechSynthesis.getVoices();
+                const select = document.getElementById('voiceSelect');
+                select.innerHTML = '';
+
+                // Filter English voices
+                const enVoices = voices.filter(v => v.lang.startsWith('en'));
+                
+                if (enVoices.length === 0) {
+                    select.innerHTML = '<option value="">קול אנגלית ברירת מחדל</option>';
+                    return;
+                }
+
+                // Prefer Female voices (e.g. Google US English, Samantha, Zira, Victoria, Karen)
+                let selectedIdx = 0;
+                enVoices.forEach((voice, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    select.appendChild(option);
+
+                    const nameUpper = voice.name.toUpperCase();
+                    if (nameUpper.includes('FEMALE') || nameUpper.includes('GOOGLE US ENGLISH') || nameUpper.includes('SAMANTHA') || nameUpper.includes('ZIRA')) {
+                        selectedIdx = index;
+                    }
+                });
+
+                select.selectedIndex = selectedIdx;
+                activeVoice = enVoices[selectedIdx];
+            }
+
+            populateVoices();
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = populateVoices;
+            }
+        }
+
+        function changeVoice() {
+            const select = document.getElementById('voiceSelect');
+            const voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+            if (voices[select.value]) {
+                activeVoice = voices[select.value];
+            }
+        }
+
+        function speakWord(text) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel(); // Stop current speech
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.85; // Slightly slower for clarity
+            if (activeVoice) {
+                utterance.voice = activeVoice;
+            }
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function testVoice() {
+            speakWord("Hello Nave! Let's practice English.");
+        }
+
+
+        // =========================================================================
+        // 2. SHUFFLE & DECK MANAGEMENT
+        // =========================================================================
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function buildDecks() {
+            // Module 2 Deck
+            mod2Deck = shuffleState[2] ? shuffleArray(targetWords) : [...targetWords];
+            mod2Index = 0;
+
+            // Module 3 Deck
+            mod3Deck = shuffleState[3] ? shuffleArray(targetWords) : [...targetWords];
+            mod3Index = 0;
+
+            // Module 4 Deck
+            mod4Deck = shuffleState[4] ? shuffleArray(targetWords) : [...targetWords];
+            mod4Index = 0;
+        }
+
+        function toggleShuffle(modNum) {
+            shuffleState[modNum] = !shuffleState[modNum];
+            const btn = document.getElementById(`shuffle-btn-${modNum}`);
+            if (shuffleState[modNum]) {
+                btn.textContent = "ON (ערבוב פעיל)";
+                btn.className = "px-3 py-1 rounded-lg text-xs font-bold bg-emerald-500 text-white shadow-sm transition";
+            } else {
+                btn.textContent = "OFF (סדר קבוע)";
+                btn.className = "px-3 py-1 rounded-lg text-xs font-bold bg-slate-400 text-white shadow-sm transition";
+            }
+
+            // Rebuild deck & render module
+            buildDecks();
+            if (modNum === 2) renderModule2();
+            if (modNum === 3) renderModule3();
+            if (modNum === 4) renderModule4();
+        }
+
+        // NAVIGATION MODULE SWITCHER (NO AUTO SPEECH ON TAB SWITCH)
+        function switchModule(modNum) {
+            document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-sky-600', 'text-sky-600');
+                btn.classList.add('border-transparent', 'text-slate-500');
+            });
+
+            document.getElementById(`module-${modNum}`).classList.remove('hidden');
+            const activeTab = document.getElementById(`tab-${modNum}`);
+            activeTab.classList.remove('border-transparent', 'text-slate-500');
+            activeTab.classList.add('border-sky-600', 'text-sky-600');
+
+            if (modNum === 2) renderModule2();
+            if (modNum === 3) renderModule3();
+            if (modNum === 4) renderModule4();
+        }
+
+
+        // =========================================================================
+        // MODULE 1: TEACH / REVIEW LOGIC
+        // =========================================================================
+        function renderModule1() {
+            const item = targetWords[mod1Index];
+            document.getElementById('mod1-counter').textContent = `מילה ${mod1Index + 1} מתוך ${targetWords.length}`;
+            document.getElementById('mod1-emoji').textContent = item.emoji;
+            document.getElementById('mod1-en').textContent = item.word;
+            document.getElementById('mod1-tpr').textContent = item.anchor;
+            document.getElementById('mod1-he').textContent = item.hebrew;
+        }
+
+        function mod1NextCard() {
+            mod1Index = (mod1Index + 1) % targetWords.length;
+            renderModule1();
+            // Strictly NO auto speech playback on card change
+        }
+
+        function mod1PrevCard() {
+            mod1Index = (mod1Index - 1 + targetWords.length) % targetWords.length;
+            renderModule1();
+            // Strictly NO auto speech playback on card change
+        }
+
+
+        // =========================================================================
+        // MODULE 2: LEVEL 1 MULTIPLE CHOICE LOGIC
+        // =========================================================================
+        function mod2CurrentQuestion() {
+            return mod2Deck[mod2Index] || mod2Deck[0];
+        }
+
+        function renderModule2() {
+            if (mod2Index >= mod2Deck.length) {
+                // Completed
+                document.getElementById('mod2-card').innerHTML = `
+                    <div class="py-8">
+                        <span class="text-6xl">🎉</span>
+                        <h3 class="text-3xl font-extrabold text-sky-600 my-3">כל הכבוד נווה!</h3>
+                        <p class="text-slate-600 font-bold mb-6">סיימת בהצלחה את המבחן האמריקאי!</p>
+                        <button onclick="resetModule2()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-2xl shadow-lg transition">
+                            התחל מחדש 🔄
+                        </button>
+                    </div>
+                `;
+                jsConfetti.addConfetti();
+                return;
+            }
+
+            const q = mod2CurrentQuestion();
+            document.getElementById('mod2-counter').textContent = `שאלה ${mod2Index + 1} מתוך ${mod2Deck.length}`;
+            document.getElementById('mod2-word').textContent = q.word;
+            document.getElementById('mod2-feedback').textContent = '';
+
+            // Generate 4 Options (1 correct + 3 distractor options)
+            let options = [q.hebrew];
+            let otherHebrews = targetWords.filter(w => w.hebrew !== q.hebrew).map(w => w.hebrew);
+            if (shuffleState[2]) {
+                otherHebrews = shuffleArray(otherHebrews);
+            }
+            options.push(otherHebrews[0], otherHebrews[1], otherHebrews[2]);
+            
+            // Shuffle final options if shuffle is enabled
+            options = shuffleState[2] ? shuffleArray(options) : options;
+
+            const optionsContainer = document.getElementById('mod2-options');
+            optionsContainer.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "mod2-opt-btn bg-slate-50 hover:bg-sky-50 text-slate-800 font-extrabold text-xl sm:text-2xl py-4 px-4 rounded-2xl border-2 border-slate-200 hover:border-sky-400 transition shadow-sm";
+                btn.textContent = opt;
+                btn.onclick = () => mod2CheckAnswer(opt, q.hebrew, btn);
+                optionsContainer.appendChild(btn);
+            });
+            // Strictly NO auto speech playback on card change
+        }
+
+        function mod2CheckAnswer(selected, correct, btn) {
+            const feedback = document.getElementById('mod2-feedback');
+            document.querySelectorAll('.mod2-opt-btn').forEach(b => b.disabled = true);
+
+            if (selected === correct) {
+                btn.className = "mod2-opt-btn bg-emerald-500 text-white font-extrabold text-xl sm:text-2xl py-4 px-4 rounded-2xl border-2 border-emerald-600 shadow-md transform scale-105 transition";
+                feedback.innerHTML = `<span class="text-emerald-600">כל הכבוד! נכון מאוד! ✨</span>`;
+                jsConfetti.addConfetti({ emojis: ['⭐', '🎉', '👏'], confettiNumber: 15 });
+                
+                setTimeout(() => {
+                    mod2Index++;
+                    renderModule2();
+                }, 1200);
+            } else {
+                btn.className = "mod2-opt-btn bg-rose-500 text-white font-extrabold text-xl sm:text-2xl py-4 px-4 rounded-2xl border-2 border-rose-600 shadow-md transition";
+                feedback.innerHTML = `<span class="text-rose-600">לא מדויק, התשובה היא: ${correct}</span>`;
+                
+                setTimeout(() => {
+                    mod2Index++;
+                    renderModule2();
+                }, 2000);
+            }
+        }
+
+        function resetModule2() {
+            buildDecks();
+            switchModule(2);
+        }
+
+
+        // =========================================================================
+        // MODULE 3: LEVEL 2 ACTIVE RECALL TYPING LOGIC
+        // =========================================================================
+        function mod3CurrentQuestion() {
+            return mod3Deck[mod3Index] || mod3Deck[0];
+        }
+
+        function renderModule3() {
+            if (mod3Index >= mod3Deck.length) {
+                document.getElementById('mod3-card').innerHTML = `
+                    <div class="py-8">
+                        <span class="text-6xl">🏆</span>
+                        <h3 class="text-3xl font-extrabold text-purple-600 my-3">אלופפף נווה!</h3>
+                        <p class="text-slate-600 font-bold mb-6">סיימת את מבחן ההקלדה והזיכרון!</p>
+                        <button onclick="resetModule3()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-2xl shadow-lg transition">
+                            תרגול נוסף 🔄
+                        </button>
+                    </div>
+                `;
+                jsConfetti.addConfetti();
+                return;
+            }
+
+            const q = mod3CurrentQuestion();
+            document.getElementById('mod3-counter').textContent = `שאלה ${mod3Index + 1} מתוך ${mod3Deck.length}`;
+            document.getElementById('mod3-hebrew-prompt').textContent = q.hebrew;
+            document.getElementById('mod3-input').value = '';
+            document.getElementById('mod3-input').focus();
+            document.getElementById('mod3-hint-box').classList.add('hidden');
+            document.getElementById('mod3-feedback').textContent = '';
+        }
+
+        function mod3ShowHint() {
+            const q = mod3CurrentQuestion();
+            const hintBox = document.getElementById('mod3-hint-box');
+            hintBox.innerHTML = `רמז: האות הראשונה היא <span class="en-text font-extrabold text-lg text-purple-600">${q.word.charAt(0)}</span> ${q.emoji}`;
+            hintBox.classList.remove('hidden');
+        }
+
+        function mod3CheckAnswer(e) {
+            e.preventDefault();
+            const q = mod3CurrentQuestion();
+            const inputVal = document.getElementById('mod3-input').value.trim().toLowerCase();
+            const feedback = document.getElementById('mod3-feedback');
+
+            if (inputVal === q.word.toLowerCase()) {
+                feedback.innerHTML = `<span class="text-emerald-600">מצוין! הקלדת נכון: ${q.word} 🌟</span>`;
+                jsConfetti.addConfetti({ emojis: ['✨', '🚀', '🎯'], confettiNumber: 20 });
+                
+                setTimeout(() => {
+                    mod3Index++;
+                    renderModule3();
+                }, 1300);
+            } else {
+                feedback.innerHTML = `<span class="text-rose-600">כמעט! המילה היא: <span class="en-text font-bold">${q.word}</span></span>`;
+                
+                setTimeout(() => {
+                    mod3Index++;
+                    renderModule3();
+                }, 2200);
+            }
+        }
+
+        function resetModule3() {
+            buildDecks();
+            switchModule(3);
+        }
+
+
+        // =========================================================================
+        // MODULE 4: DAILY REVIEW / FLASHCARDS LOGIC
+        // =========================================================================
+        function mod4CurrentCard() {
+            return mod4Deck[mod4Index] || mod4Deck[0];
+        }
+
+        function renderModule4() {
+            const card = mod4CurrentCard();
+            document.getElementById('mod4-counter').textContent = `כרטיסייה ${mod4Index + 1} מתוך ${mod4Deck.length}`;
+            document.getElementById('mod4-word').textContent = card.word;
+            
+            // Reset hint and answer visibility
+            document.getElementById('mod4-hint-area').classList.add('hidden');
+            document.getElementById('mod4-answer-area').classList.add('hidden');
+
+            document.getElementById('mod4-emoji').textContent = card.emoji;
+            document.getElementById('mod4-tpr').textContent = card.anchor;
+            document.getElementById('mod4-hebrew').textContent = card.hebrew;
+
+            // Strictly NO auto speech playback on card change
+        }
+
+        // MANDATORY BUTTON 1: HINT
+        function mod4ShowHint() {
+            const hintArea = document.getElementById('mod4-hint-area');
+            hintArea.classList.toggle('hidden');
+        }
+
+        // MANDATORY BUTTON 2: SHOW ANSWER
+        function mod4ShowAnswer() {
+            const answerArea = document.getElementById('mod4-answer-area');
+            answerArea.classList.toggle('hidden');
+        }
+
+        function mod4NextCard() {
+            mod4Index = (mod4Index + 1) % mod4Deck.length;
+            renderModule4();
+        }
+
+        function mod4PrevCard() {
+            mod4Index = (mod4Index - 1 + mod4Deck.length) % mod4Deck.length;
+            renderModule4();
+        }
+    </script>
+</body>
+</html>
