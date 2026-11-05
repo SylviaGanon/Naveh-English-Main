@@ -275,14 +275,14 @@
         </section>
 
 
-        <!-- MODULE 4: DAILY REVIEW / FLASHCARDS -->
+        <!-- MODULE 4: DAILY REVIEW / SIMPLE FLASHCARDS -->
         <section id="module-4" class="module-content space-y-4 hidden">
             
             <!-- MODULE CONTROL BAR WITH SHUFFLE TOGGLE -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
                 <div>
                     <h2 class="font-bold text-slate-800 text-base sm:text-lg">שלב 4: חזרה יומית (כרטיסיות זיכרון)</h2>
-                    <p class="text-xs text-slate-500">השתמש ברמז הוויזואלי לפני שתחשוף את התשובה</p>
+                    <p class="text-xs text-slate-500">חזרה מהירה: לחץ על הכרטיסייה לחישוף התרגום בעברית</p>
                 </div>
                 
                 <!-- SHUFFLE TOGGLE -->
@@ -294,56 +294,39 @@
                 </div>
             </div>
 
-            <!-- FLASHCARD AREA -->
-            <div class="bg-white rounded-3xl border-4 border-amber-200 shadow-xl p-6 sm:p-8 flex flex-col items-center text-center relative min-h-[380px] justify-between">
+            <!-- CLEAN FLASHCARD CONTAINER -->
+            <div class="bg-white rounded-3xl border-4 border-amber-200 shadow-xl p-6 sm:p-8 flex flex-col items-center text-center relative min-h-[360px] justify-between">
                 
                 <!-- Card Header -->
-                <div class="w-full flex justify-between items-center">
+                <div class="w-full flex justify-between items-center mb-2">
                     <span id="mod4-counter" class="bg-amber-100 text-amber-800 font-bold text-xs sm:text-sm px-3 py-1 rounded-full">כרטיסייה 1 מתוך 11</span>
                     <button onclick="speakWord(mod4CurrentCard().word)" class="bg-amber-500 hover:bg-amber-600 text-white p-2.5 rounded-xl transition font-bold text-sm flex items-center gap-1 shadow-sm">
                         <span>🔊</span> <span>השמע</span>
                     </button>
                 </div>
 
-                <!-- Card Content Display -->
-                <div class="my-auto w-full py-4 flex flex-col items-center">
-                    <!-- English Word Prompt -->
-                    <h2 id="mod4-word" class="en-text text-6xl sm:text-7xl font-extrabold text-slate-800 my-2">
-                        bat
-                    </h2>
-
-                    <!-- Visual Clue / Hint Box (Revealed by Button 1) -->
-                    <div id="mod4-hint-area" class="hidden my-3 p-4 bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl w-full max-w-xs transition">
-                        <div id="mod4-emoji" class="text-6xl mb-1">🦇</div>
-                        <div id="mod4-tpr" class="text-xs font-bold text-amber-800">🍎 Short A - apple</div>
-                    </div>
-
-                    <!-- Full Answer Box (Revealed by Button 2) -->
-                    <div id="mod4-answer-area" class="hidden my-3 p-4 bg-emerald-50 border-2 border-emerald-300 rounded-2xl w-full max-w-xs transition">
-                        <div class="text-xs text-emerald-600 font-bold">תרגום מלא:</div>
-                        <div id="mod4-hebrew" class="text-4xl font-extrabold text-emerald-700">עטלף / מחבט</div>
+                <!-- FLIPPABLE WORD SLOT (SLOT FLIPS ON CLICK) -->
+                <div onclick="mod4ToggleFlip()" class="my-auto w-full max-w-md cursor-pointer transition-all duration-300 transform hover:scale-105">
+                    <div id="mod4-card-slot" class="bg-sky-50 border-4 border-sky-300 rounded-3xl p-8 shadow-inner flex flex-col items-center justify-center min-h-[160px]">
+                        <!-- Dynamic Text (English Word OR Hebrew Translation) -->
+                        <h2 id="mod4-card-text" class="en-text text-5xl sm:text-6xl font-extrabold text-sky-700 tracking-wide">
+                            bat
+                        </h2>
+                        <span id="mod4-flip-hint" class="text-xs font-bold text-sky-400 mt-2 block">לחץ כדי לראות תרגום 🔄</span>
                     </div>
                 </div>
 
-                <!-- MANDATORY BUTTONS 1 & 2 -->
-                <div class="w-full space-y-3 pt-2">
-                    <div class="grid grid-cols-2 gap-3 w-full">
-                        <!-- BUTTON 1: HINT -->
-                        <button onclick="mod4ShowHint()" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold py-3 px-4 rounded-2xl shadow-md border-b-4 border-amber-600 active:translate-y-0.5 active:border-b-0 transition text-sm sm:text-base flex items-center justify-center gap-1">
-                            <span>💡 רמז / Hint</span>
-                        </button>
-                        <!-- BUTTON 2: SHOW ANSWER -->
-                        <button onclick="mod4ShowAnswer()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-2xl shadow-md border-b-4 border-emerald-700 active:translate-y-0.5 active:border-b-0 transition text-sm sm:text-base flex items-center justify-center gap-1">
-                            <span>👁️ הצג תשובה</span>
-                        </button>
-                    </div>
+                <!-- BOTTOM CONTROLS & NAVIGATION -->
+                <div class="w-full space-y-3 pt-4 border-t border-slate-100">
+                    <button onclick="mod4ToggleFlip()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-2xl shadow-md border-b-4 border-emerald-700 active:translate-y-0.5 active:border-b-0 transition text-sm sm:text-base flex items-center justify-center gap-2">
+                        <span>👁️ הצג תרגום (Hebrew)</span>
+                    </button>
 
-                    <!-- CARD NAVIGATION -->
-                    <div class="flex justify-between items-center pt-2 border-t border-slate-100">
-                        <button onclick="mod4PrevCard()" class="text-slate-500 hover:text-slate-800 font-bold text-sm py-1 px-3">
+                    <div class="flex justify-between items-center pt-1">
+                        <button onclick="mod4PrevCard()" class="text-slate-500 hover:text-slate-800 font-bold text-sm py-1.5 px-3">
                             ➡️ הקודם
                         </button>
-                        <button onclick="mod4NextCard()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm py-2 px-5 rounded-xl shadow transition">
+                        <button onclick="mod4NextCard()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold text-sm py-2 px-6 rounded-xl shadow transition">
                             הכרטיסייה הבאה ⬅️
                         </button>
                     </div>
@@ -393,6 +376,7 @@
         // Module 4 State
         let mod4Index = 0;
         let mod4Deck = [];
+        let mod4IsFlipped = false;
 
         // Confetti Instance
         const jsConfetti = new JSConfetti();
@@ -498,6 +482,7 @@
             // Module 4 Deck
             mod4Deck = shuffleState[4] ? shuffleArray(targetWords) : [...targetWords];
             mod4Index = 0;
+            mod4IsFlipped = false;
         }
 
         function toggleShuffle(modNum) {
@@ -714,7 +699,7 @@
 
 
         // =========================================================================
-        // MODULE 4: DAILY REVIEW / FLASHCARDS LOGIC
+        // MODULE 4: DAILY REVIEW / SIMPLE FLASHCARDS LOGIC
         // =========================================================================
         function mod4CurrentCard() {
             return mod4Deck[mod4Index] || mod4Deck[0];
@@ -723,38 +708,42 @@
         function renderModule4() {
             const card = mod4CurrentCard();
             document.getElementById('mod4-counter').textContent = `כרטיסייה ${mod4Index + 1} מתוך ${mod4Deck.length}`;
-            document.getElementById('mod4-word').textContent = card.word;
             
-            // Reset hint and answer visibility
-            document.getElementById('mod4-hint-area').classList.add('hidden');
-            document.getElementById('mod4-answer-area').classList.add('hidden');
+            const cardSlot = document.getElementById('mod4-card-slot');
+            const cardText = document.getElementById('mod4-card-text');
+            const flipHint = document.getElementById('mod4-flip-hint');
 
-            document.getElementById('mod4-emoji').textContent = card.emoji;
-            document.getElementById('mod4-tpr').textContent = card.anchor;
-            document.getElementById('mod4-hebrew').textContent = card.hebrew;
+            if (mod4IsFlipped) {
+                // Show Hebrew Translation
+                cardSlot.className = "bg-amber-50 border-4 border-amber-300 rounded-3xl p-8 shadow-inner flex flex-col items-center justify-center min-h-[160px]";
+                cardText.className = "text-4xl sm:text-5xl font-extrabold text-amber-800 tracking-wide";
+                cardText.textContent = card.hebrew;
+                flipHint.textContent = "חזרה לאנגלית 🔄";
+            } else {
+                // Show English Word
+                cardSlot.className = "bg-sky-50 border-4 border-sky-300 rounded-3xl p-8 shadow-inner flex flex-col items-center justify-center min-h-[160px]";
+                cardText.className = "en-text text-5xl sm:text-6xl font-extrabold text-sky-700 tracking-wide";
+                cardText.textContent = card.word;
+                flipHint.textContent = "לחץ כדי לראות תרגום 🔄";
+            }
 
             // Strictly NO auto speech playback on card change
         }
 
-        // MANDATORY BUTTON 1: HINT
-        function mod4ShowHint() {
-            const hintArea = document.getElementById('mod4-hint-area');
-            hintArea.classList.toggle('hidden');
-        }
-
-        // MANDATORY BUTTON 2: SHOW ANSWER
-        function mod4ShowAnswer() {
-            const answerArea = document.getElementById('mod4-answer-area');
-            answerArea.classList.toggle('hidden');
+        function mod4ToggleFlip() {
+            mod4IsFlipped = !mod4IsFlipped;
+            renderModule4();
         }
 
         function mod4NextCard() {
             mod4Index = (mod4Index + 1) % mod4Deck.length;
+            mod4IsFlipped = false;
             renderModule4();
         }
 
         function mod4PrevCard() {
             mod4Index = (mod4Index - 1 + mod4Deck.length) % mod4Deck.length;
+            mod4IsFlipped = false;
             renderModule4();
         }
     </script>
